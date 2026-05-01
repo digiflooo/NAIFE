@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAIFE — Revista Literaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --pink: #e8305a;
+    --yellow: #f2d024;
+    --cyan: #00c9b1;
+    --gray: #2a2a2a;
+    --lightgray: #e0dbd0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* ---- ANNOUNCEMENT BAR ---- */
+  .bar {
+    background: var(--pink);
+    color: var(--white);
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    padding: 8px 20px;
+    text-transform: uppercase;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 60px;
+    border-bottom: 2px solid var(--black);
+    position: sticky;
+    top: 0;
+    background: var(--white);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 0.25em;
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--black);
+    position: relative;
+    padding-bottom: 4px;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--pink);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-icon { font-size: 1.1rem; cursor: pointer; }
+
+  /* ---- HERO ---- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 90vh;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .hero-left {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 2px solid var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left::before {
+    content: 'VOL.3';
+    position: absolute;
+    top: -20px; right: -10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12rem;
+    color: var(--yellow);
+    opacity: 0.25;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    color: var(--black);
+    margin-bottom: 30px;
+  }
+
+  .hero-title span { color: var(--pink); }
+
+  .hero-desc {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--gray);
+    max-width: 380px;
+    margin-bottom: 40px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    background: var(--black);
+    color: var(--white);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+  }
+
+  .meta-tag.accent { background: var(--pink); }
+  .meta-tag.yellow { background: var(--yellow); color: var(--black); }
+
+  .hero-right {
+    position: relative;
+    background: var(--black);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 0.4s ease, transform 0.6s ease;
+  }
+
+  .hero-right:hover .hero-cover {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+
+  .hero-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    color: var(--white);
+    padding: 40px 30px 20px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ---- TICKER ---- */
+  .ticker {
+    background: var(--yellow);
+    border-top: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 20s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    color: var(--black);
+  }
+
+  .ticker-inner span { margin: 0 40px; }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---- ABOUT SECTION ---- */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .about-text {
+    padding: 80px 60px;
+    border-right: 2px solid var(--black);
+  }
+
+  .section-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pink);
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: var(--pink);
+  }
+
+  .about-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  .about-body {
+    font-size: 0.8rem;
+    line-height: 1.9;
+    color: var(--gray);
+  }
+
+  .about-images {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .about-img {
+    overflow: hidden;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .about-img:last-child { border-bottom: none; }
+
+  .about-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .about-img:hover img { transform: scale(1.05); }
+
+  /* ---- LATEST ISSUE ---- */
+  .issue-banner {
+    background: var(--black);
+    color: var(--white);
+    padding: 80px 60px;
+    border-bottom: 2px solid var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .issue-banner::after {
+    content: 'NAIFE';
+    position: absolute;
+    right: -40px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18rem;
+    color: white;
+    opacity: 0.04;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .issue-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .issue-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .issue-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: var(--cyan);
+  }
+
+  .issue-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .issue-title em { color: var(--pink); font-style: normal; }
+
+  .issue-body {
+    font-size: 0.8rem;
+    line-height: 1.9;
+    color: #aaa;
+    margin-bottom: 30px;
+  }
+
+  .btn {
+    display: inline-block;
+    background: var(--pink);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    text-decoration: none;
+    border: 2px solid var(--pink);
+    transition: background 0.25s, color 0.25s;
+  }
+
+  .btn:hover { background: transparent; color: var(--pink); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border-color: var(--white);
+    margin-left: 14px;
+  }
+
+  .btn-ghost:hover { background: var(--white); color: var(--black); }
+
+  /* ---- PUBLICACIONES ---- */
+  .publications {
+    padding: 80px 60px;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .pub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 50px;
+  }
+
+  .pub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    font-style: italic;
+  }
+
+  .pub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 2px solid var(--black);
+  }
+
+  .pub-card {
+    padding: 36px 32px;
+    border-right: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    transition: background 0.25s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pub-card:nth-child(3n) { border-right: none; }
+  .pub-card:nth-last-child(-n+3) { border-bottom: none; }
+
+  .pub-card:hover { background: var(--black); color: var(--white); }
+
+  .pub-card:hover .pub-date,
+  .pub-card:hover .pub-excerpt { color: #aaa; }
+
+  .pub-card:hover .pub-lang { background: var(--pink); color: var(--white); }
+
+  .pub-lang {
+    display: inline-block;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1.5px solid var(--black);
+    margin-bottom: 16px;
+    font-weight: 700;
+    transition: all 0.25s;
+  }
+
+  .pub-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .pub-date {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 14px;
+    transition: color 0.25s;
+  }
+
+  .pub-excerpt {
+    font-size: 0.72rem;
+    line-height: 1.75;
+    color: var(--gray);
+    transition: color 0.25s;
+  }
+
+  .pub-arrow {
+    position: absolute;
+    bottom: 20px; right: 24px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  .pub-card:hover .pub-arrow { opacity: 1; transform: translate(4px, -4px); }
+
+  /* ---- QUOTE ---- */
+  .quote-section {
+    background: var(--pink);
+    padding: 80px 60px;
+    text-align: center;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    color: var(--white);
+    opacity: 0.3;
+    line-height: 0.5;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+    color: var(--white);
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto 20px;
+    line-height: 1.5;
+  }
+
+  .quote-author {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ---- CONTACT ---- */
+  .contact-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .contact-cell {
+    padding: 40px 50px;
+    border-right: 2px solid var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact-cell:last-child { border-right: none; }
+
+  .contact-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+
+  .contact-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  .social-row {
+    display: flex;
+    gap: 14px;
+    margin-top: 6px;
+  }
+
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--black);
+    padding: 7px 14px;
+    border: 1.5px solid var(--black);
+    transition: all 0.2s;
+  }
+
+  .social-btn:hover { background: var(--black); color: var(--white); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 50px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.2em;
+  }
+
+  .footer-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-nav a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-nav a:hover { color: var(--pink); }
+
+  .footer-right {
+    text-align: right;
+    font-size: 0.62rem;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  .footer-disclaimer {
+    grid-column: 1 / -1;
+    padding-top: 30px;
+    border-top: 1px solid #222;
+    font-size: 0.62rem;
+    color: #444;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-left > * {
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero-eyebrow { animation-delay: 0.1s; }
+  .hero-title { animation-delay: 0.2s; }
+  .hero-desc { animation-delay: 0.3s; }
+  .hero-meta { animation-delay: 0.4s; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .hero, .about { grid-template-columns: 1fr; }
+    .hero-right { min-height: 50vw; }
+    .hero-left { padding: 50px 24px; }
+    .about-text { padding: 50px 24px; border-right: none; border-bottom: 2px solid var(--black); }
+    .about-images { grid-template-rows: 200px 200px; }
+    .issue-grid { grid-template-columns: 1fr; gap: 30px; }
+    .issue-banner { padding: 50px 24px; }
+    .publications { padding: 50px 24px; }
+    .pub-grid { grid-template-columns: 1fr; }
+    .pub-card { border-right: none !important; border-bottom: 2px solid var(--black) !important; }
+    .pub-card:last-child { border-bottom: none !important; }
+    .contact-strip { grid-template-columns: 1fr; }
+    .contact-cell { border-right: none; border-bottom: 2px solid var(--black); }
+    .contact-cell:last-child { border-bottom: none; }
+    footer { grid-template-columns: 1fr; padding: 40px 24px; }
+    .footer-right { text-align: left; }
+    .quote-section { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">⬥ Revista Naife — Volumen 3 · Octubre 2025 · ISSN: 3028-5291 ⬥ Ahora disponible en línea</div>
+
+<nav>
+  <a href="#" class="nav-logo">NAIFE</a>
+  <ul class="nav-links">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Quiénes somos</a></li>
+    <li><a href="#">Volúmenes</a></li>
+    <li><a href="#">Publicaciones</a></li>
+  </ul>
+  <span class="nav-icon">☰</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Revista Literaria · Uninorte</p>
+    <h1 class="hero-title">NAI<span>FE</span></h1>
+    <p class="hero-desc">
+      Un espacio donde convergen la reflexión académica y la creación artística. Ensayos, poemas, relatos breves — escritos por estudiantes que ven el mundo con otras palabras.
+    </p>
+    <div class="hero-meta">
+      <span class="meta-tag accent">Vol. 3 · 2025</span>
+      <span class="meta-tag yellow">5 idiomas</span>
+      <span class="meta-tag">Caribe Colombiano</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img class="hero-cover"
+      src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80"
+      alt="Portada Naife Vol. 3"
+      onerror="this.style.background='#1a1a2e';this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22900%22><rect fill=%22%231a1a2e%22 width=%22800%22 height=%22900%22/><text x=%22400%22 y=%22460%22 font-family=%22serif%22 font-size=%22120%22 fill=%22%23e8305a%22 text-anchor=%22middle%22>NAIFE</text></svg>'">
+    <div class="hero-caption">Naife — Volumen 3 · Octubre 2025</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Escritura</span><span>✦</span>
+    <span>Poesía</span><span>✦</span>
+    <span>Ensayo</span><span>✦</span>
+    <span>Arte</span><span>✦</span>
+    <span>Caribe</span><span>✦</span>
+    <span>Diversidad</span><span>✦</span>
+    <span>Lengua</span><span>✦</span>
+    <span>Identidad</span><span>✦</span>
+    <span>Escritura</span><span>✦</span>
+    <span>Poesía</span><span>✦</span>
+    <span>Ensayo</span><span>✦</span>
+    <span>Arte</span><span>✦</span>
+    <span>Caribe</span><span>✦</span>
+    <span>Diversidad</span><span>✦</span>
+    <span>Lengua</span><span>✦</span>
+    <span>Identidad</span><span>✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-text">
+    <p class="section-label">Sobre Naife</p>
+    <h2 class="about-title">Explora el mundo de la literatura con Naife</h2>
+    <p class="about-body">
+      Naife es un espacio donde convergen la reflexión académica y la creación artística. Publicamos diversos textos académicos como ensayos, así como textos literarios como poemas y relatos breves, que abarcan una variedad de temas contemporáneos y clásicos.
+      <br><br>
+      Nos distinguimos por nuestro enfoque multilingüe, con contribuciones escritas en cinco idiomas, reflejando la diversidad y el compromiso de nuestra comunidad estudiantil con las lenguas modernas.
+    </p>
+  </div>
+  <div class="about-images">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=600&q=80" alt="Revista Naife">
+    </div>
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1533669955142-6a73332af4db?w=600&q=80" alt="Escritura">
+    </div>
+  </div>
+</section>
+
+<!-- LATEST ISSUE -->
+<section class="issue-banner">
+  <div class="issue-grid">
+    <div></div>
+    <div>
+      <p class="issue-label">Último número</p>
+      <h2 class="issue-title">¡Naife vuelve con un <em>nuevo volumen!</em></h2>
+      <p class="issue-body">
+        Tras un semestre lleno de trabajo duro y talleres, seguimos trayendo más contenido a la comunidad universitaria en Uninorte. El lanzamiento de nuestro tercer volumen físico fue un gran éxito. Comenzamos este nuevo proceso hace un semestre, anunciando a todos los interesados que enviaran sus textos y producciones que desafiaran la visión tradicional del Caribe.
+        <br><br>
+        ¡No te pierdas de este viaje textual y de la experiencia Naife!
+      </p>
+      <a href="#" class="btn">Leer en línea</a>
+      <a href="#" class="btn btn-ghost">Ver todos los volúmenes</a>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICACIONES -->
+<section class="publications">
+  <div class="pub-header">
+    <div>
+      <p class="section-label">Del archivo</p>
+      <h2 class="pub-title">Nuestras publicaciones</h2>
+    </div>
+    <a href="#" class="btn" style="font-size:0.6rem">Ver todas →</a>
+  </div>
+
+  <div class="pub-grid">
+
+    <div class="pub-card">
+      <span class="pub-lang">Deutsch</span>
+      <h3 class="pub-card-title">Vinyl-Vibes: Eine Erkundung von Barranquillas musikalischer Seele</h3>
+      <p class="pub-date">12 de noviembre de 2023</p>
+      <p class="pub-excerpt">Dieser Text basiert auf mehreren Interviews, die während der BAQ-Vinilo-Schallplattenmesse im November 2024 mit Vinyl-Enthusiasten geführt wurden…</p>
+      <span class="pub-arrow">↗</span>
+    </div>
+
+    <div class="pub-card">
+      <span class="pub-lang">Español</span>
+      <h3 class="pub-card-title">Vinyl Vibes: Una exploración por el alma musical de Barranquilla</h3>
+      <p class="pub-date">12 de noviembre de 2023</p>
+      <p class="pub-excerpt">Este texto fue basado en entrevistas que se realizaron en BAQ Vinilo, un evento de entusiastas de vinilos en Barranquilla en noviembre del 2024…</p>
+      <span class="pub-arrow">↗</span>
+    </div>
+
+    <div class="pub-card">
+      <span class="pub-lang">English</span>
+      <h3 class="pub-card-title">Vinyl Vibes: An Exploration of Barranquilla's Musical Soul</h3>
+      <p class="pub-date">12 de noviembre de 2023</p>
+      <p class="pub-excerpt">This text is based on several interviews conducted with vinyl enthusiasts during the BAQ Vinilo record fair in November 2024…</p>
+      <span class="pub-arrow">↗</span>
+    </div>
+
+    <div class="pub-card">
+      <span class="pub-lang">Poema</span>
+      <h3 class="pub-card-title">El mar que nos une: voces del Caribe colombiano</h3>
+      <p class="pub-date">15 de octubre de 2025</p>
+      <p class="pub-excerpt">Una reflexión poética sobre la identidad caribeña y la lengua como territorio. Primer lugar, concurso interno Naife 2025…</p>
+      <span class="pub-arrow">↗</span>
+    </div>
+
+    <div class="pub-card">
+      <span class="pub-lang">Ensayo</span>
+      <h3 class="pub-card-title">Cuerpos que hablan: el lenguaje del silencio en la danza afro</h3>
+      <p class="pub-date">20 de octubre de 2025</p>
+      <p class="pub-excerpt">Desde los estudios culturales, este ensayo explora cómo el cuerpo en movimiento articula memorias históricas que la palabra no puede nombrar…</p>
+      <span class="pub-arrow">↗</span>
+    </div>
+
+    <div class="pub-card">
+      <span class="pub-lang">Relato</span>
+      <h3 class="pub-card-title">La última madrugada del señor Palomino</h3>
+      <p class="pub-date">22 de octubre de 2025</p>
+      <p class="pub-excerpt">Ficción breve ambientada en el mercado de Barranquilla. Una historia sobre memoria, pérdida y el olor del pescado fresco en la madrugada…</p>
+      <span class="pub-arrow">↗</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <span class="quote-mark">"</span>
+  <p class="quote-text">El límite de mi lenguaje es el límite de mi mundo.</p>
+  <p class="quote-author">— Ludwig Wittgenstein</p>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-strip">
+  <div class="contact-cell">
+    <p class="contact-label">Síguenos</p>
+    <div class="social-row">
+      <a href="#" class="social-btn">⬥ Instagram</a>
+      <a href="#" class="social-btn">✕ Twitter</a>
+    </div>
+  </div>
+  <div class="contact-cell">
+    <p class="contact-label">Escríbenos</p>
+    <p class="contact-value">naife@uninorte.edu.co</p>
+  </div>
+  <div class="contact-cell">
+    <p class="contact-label">Aviso</p>
+    <p style="font-size:0.7rem;line-height:1.6;color:#555">Las ideas expresadas en este espacio no representan la opinión de la Universidad del Norte.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">NAIFE</div>
+    <p style="font-size:0.62rem;color:#555;margin-top:8px;letter-spacing:0.05em">Revista Literaria · Uninorte<br>Barranquilla, Colombia</p>
+  </div>
+  <ul class="footer-nav">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Quiénes somos</a></li>
+    <li><a href="#">Volúmenes</a></li>
+    <li><a href="#">Publicaciones</a></li>
+  </ul>
+  <div class="footer-right">
+    <p style="font-size:0.62rem;color:#888;line-height:1.8">
+      ISSN: 3028-5291<br>
+      Vol. 3 · Octubre 2025<br>
+      © 2025 Revista Naife
+    </p>
+  </div>
+  <div class="footer-disclaimer">
+    ⬥ Las ideas expresadas en este espacio no representan la opinión de la Universidad del Norte. · Revista Naife es una publicación estudiantil independiente.
+  </div>
+</footer>
+
+</body>
+</html>
